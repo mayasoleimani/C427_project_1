@@ -176,7 +176,7 @@ int main()
 
 			// search for address
 			output.seekg(32);
-			// go back an int bit 
+			// go back an int bit
 		}
 		else if (commMsg == "LIST")
 		{
