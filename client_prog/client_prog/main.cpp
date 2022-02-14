@@ -10,8 +10,7 @@ using namespace std;
 int main()
 {
 	int count = 1000;
-	string ip = "127.0.0.1"; //server ip
-	//int SERVER_PORT = 2955; // listening port number
+	string ip = "127.0.0.1"; //server ip, standard test ip
 
 	//intialize Winsock
 	WSAData data;
@@ -49,21 +48,21 @@ int main()
 	//loop to send and recieve datas
 
 	char buf[4096];
-	string userInput;
+	string userInfo; //user input
 
 	//user input
 	do {
 		cout << "client: ";
-		getline(cin, userInput);
+		getline(cin, userInfo);
 
-		if (userInput.size() > 0)
+		if (userInfo.size() > 0)
 		{
 			//sending message once verified
-			int mesRes = send(sock, userInput.c_str(), userInput.size() + 1, 0);
+			int mesRes = send(sock, userInfo.c_str(), userInfo.size() + 1, 0);
 			if (mesRes != SOCKET_ERROR)
 			{
 				int bytesRec = recv(sock, buf, 4096, 0);
-				if (bytesRec > 0)
+				if (bytesRec > 0) //message exists, character length greater than 0
 				{
 					//if add,del,shutdown,quit,list
 
@@ -79,18 +78,14 @@ int main()
 							break;
 						}
 					}
-					//cout << "Server->" << string(buf, 0, bytesRec) << endl; //testing purposes, original
-
 					if (commWord == "ADD")
 					{
 						cout << "200 OK" << endl << "The new record is: " << ++count << endl;
 					}
-
 					else if (commWord == "QUIT")
 					{
-						
-						//shutdown
-						WSACleanup();
+						closesocket(sock);
+						exit(0);
 					}
 					else if (commWord == "SHUTDOWN")
 					{
@@ -101,7 +96,7 @@ int main()
 			}
 		}
 
-	}while (userInput.size() > 0);
+	}while (userInfo.size() > 0);
 	//shut down
 	closesocket(sock);
 	WSACleanup(); //shuts down winsock

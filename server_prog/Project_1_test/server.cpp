@@ -83,7 +83,7 @@ int main()
 	//close listening socket
 	closesocket(listening);
 
-	//while loop: accept and echo message back to client
+	//accept message from client
 
 	char buf[4096]; //mem for buf message
 
@@ -100,11 +100,13 @@ int main()
 		}
 		if (bytesRec == 0)
 		{
-			cerr << "Disconnected from client. \n";
+			cerr << "Disconnected from client. \n"; //when client disconnects, or quits
 			break;
 		}
 
-		//command word being sent
+		// address book editing
+		
+		//command word being sent (add,delete,list,shutdown,quit)
 		string commWord;
 		//command message being sent
 		string commMsg = string(buf, 0, bytesRec);
@@ -113,7 +115,7 @@ int main()
 		{
 			if (commMsg.at(i) == ' ')
 			{
-				commWord = commMsg.substr(0, i);
+				commWord = commMsg.substr(0, i); //command
 				commMsg = commMsg.substr(i + 1); //second part of message after command
 				break;
 			}
@@ -128,7 +130,7 @@ int main()
 		else if (commWord == "DELETE")
 		{
 			string book;
-			string blank = "                 "; //replaces delete
+			string blank = "                             "; //replaces deleted message
 			output.clear();
 			//moves pointer back to beginning of file
 			output.seekg(output.tellg(), ios::beg);
@@ -147,7 +149,7 @@ int main()
 					output.seekg(pos);
 					
 				
-					output << blank; //deletes
+					output << blank << endl; //deletes
 					break;
 				}
 			
@@ -206,7 +208,7 @@ int main()
 			//closes just client
 
 		}
-		else if (commWord == "SHUTDOWN")
+		else if (commWord == "SHUTDOWN") //comword orig
 		{
 			closesocket(new_s);
 			exit(0); //closes both and server
@@ -217,8 +219,6 @@ int main()
 		{
 			//error
 			cout << "403 Message Format Error, try again." << endl;
-			//output.seekg(output.tellg(), ios::beg); //wanna go back to beginning of while loop
-
 		}
 
 
