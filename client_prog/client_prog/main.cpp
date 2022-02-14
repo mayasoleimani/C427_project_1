@@ -82,13 +82,19 @@ int main()
 					{
 						cout << "200 OK" << endl << "The new record is: " << ++count << endl;
 					}
+					else if (commWord == "LIST")
+					{
+						cout << "200 OK" << endl;
+					}
 					else if (commWord == "QUIT")
 					{
+						cout << "200 OK" << endl;
 						closesocket(sock);
 						exit(0);
 					}
 					else if (commWord == "SHUTDOWN")
 					{
+						cout << "200 OK" << endl;
 						closesocket(sock);
 						exit(0);
 					}

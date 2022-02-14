@@ -182,6 +182,7 @@ int main()
 		}
 		else if (commMsg == "LIST")
 		{
+			cout << "200 OK" << endl; //new
 			string book;
 			output.clear();
 			//moves pointer back to beginning of file
@@ -204,13 +205,13 @@ int main()
 		else if (commMsg == "QUIT")
 		{
 			cout << "Client now closed." << endl;
-			//WSACleanup();
 			//closes just client
 
 		}
-		else if (commWord == "SHUTDOWN") //comword orig
+		else if (commMsg == "SHUTDOWN") //comword orig
 		{
 			closesocket(new_s);
+			WSACleanup();
 			exit(0); //closes both and server
 			break;
 			
